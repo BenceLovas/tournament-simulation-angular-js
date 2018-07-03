@@ -4,7 +4,7 @@
 angular.module('tournamentSimulation', [
   'ngRoute',
   'groupStage',
-  'myApp.view2',
+  'elimination'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');

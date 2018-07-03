@@ -14,8 +14,12 @@ angular.module('groupStage', [
   });
 }])
 
-.controller('GroupStageCtrl', ['$scope', 
-  function($scope) {
+.controller('GroupStageCtrl', ['$scope', '$location',
+  function($scope, $location) {
+    $scope.proceedToElimination = function() {
+      $location.path('/elimination');
+    };
+    $scope.isProceedToEliminationDisabled = true;
     $scope.isNextRoundDisabled = false;
     $scope.groupsOfTeams = [
         [
@@ -123,6 +127,7 @@ angular.module('groupStage', [
       $scope.matchesFinished += 2;
       if ($scope.matchesFinished === 6) {
        $scope.isNextRoundDisabled = true; 
+       $scope.isProceedToEliminationDisabled = false;
        const advancedTeams = [];
        for (let i = 0; i < $scope.groups.length; i++) {
            advancedTeams.push({ name: $scope.groups[i].teams[0].name, score: null });
