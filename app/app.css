@@ -1,25 +1,126 @@
-/* app css stylesheet */
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700");
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #dbdbdb; }
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
+.group {
+  margin: 10px;
+  background-color: #fefefe;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); }
 
-.menu:before {
-  content: "[";
-}
+.group-header {
+  background-color: #0066ff;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
 
-.menu:after {
-  content: "]";
-}
+.team-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: "name played won drawn lost goals-for goals-against goal-diff points"; }
 
-.menu > li {
-  display: inline;
-}
+.team-row:hover {
+  background-color: #919191;
+  color: white; }
 
-.menu > li + li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
+.table-header {
+  text-align: center;
+  font-weight: lighter;
+  padding: 3px 0; }
+
+.group-header {
+  color: white; }
+
+.group-title {
+  font-weight: bold;
+  padding: 3px 10px; }
+
+.team-name {
+  grid-area: name;
+  padding-left: 10px; }
+
+.group-header {
+  margin-bottom: 6px; }
+
+.team-row > div {
+  padding-top: 3px;
+  padding-bottom: 3px; }
+
+.team-played-number {
+  grid-area: played;
+  text-align: center; }
+
+.team-won-number {
+  grid-area: won;
+  text-align: center; }
+
+.team-drawn-number {
+  grid-area: drawn;
+  text-align: center; }
+
+.team-lost-number {
+  grid-area: lost;
+  text-align: center; }
+
+.team-goals-for-number {
+  grid-area: goals-for;
+  text-align: center; }
+
+.team-goals-against-number {
+  grid-area: goals-against;
+  text-align: center; }
+
+.team-goal-difference-number {
+  grid-area: goal-diff;
+  text-align: center; }
+
+.team-points-number {
+  grid-area: points;
+  text-align: center; }
+
+button {
+  padding: 6px 9px;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  border: none;
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  outline: none;
+  border-radius: 1px;
+  cursor: pointer;
+  background-color: #004ab9; }
+
+button:disabled {
+  background-color: #919191; }
+
+.match {
+  padding: 3px 0;
+  display: grid;
+  grid-template-columns: 5fr 1fr 1fr 1fr 5fr; }
+
+.match:hover {
+  background-color: #cacaca; }
+
+.fixtures {
+  padding: 5px 30px;
+  background-color: #dbdbdb; }
+
+.home-team {
+  text-align: end; }
+
+.dash {
+  text-align: center; }
+
+.score-home {
+  text-align: end; }
+
+.fixtures-wrapper {
+  margin-top: 10px; }
+
+.advance-teams > div {
+  background-color: #cacaca; }
+
+/*# sourceMappingURL=app.css.map */
