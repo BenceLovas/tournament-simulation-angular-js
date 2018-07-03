@@ -97,16 +97,13 @@ button:disabled {
   background-color: #919191; }
 
 .match {
-  padding: 3px 0;
+  padding: 4px 0;
+  background-color: #dbdbdb;
   display: grid;
   grid-template-columns: 5fr 1fr 1fr 1fr 5fr; }
 
 .match:hover {
   background-color: #cacaca; }
-
-.fixtures {
-  padding: 5px 30px;
-  background-color: #dbdbdb; }
 
 .home-team {
   text-align: end; }
@@ -118,9 +115,12 @@ button:disabled {
   text-align: end; }
 
 .fixtures-wrapper {
-  margin-top: 10px; }
+  background-color: #dbdbdb; }
 
 .advance-teams > div {
   background-color: #cacaca; }
+
+.bold {
+  font-weight: 700; }
 
 /*# sourceMappingURL=app.css.map */

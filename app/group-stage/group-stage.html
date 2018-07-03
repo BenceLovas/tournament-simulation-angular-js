@@ -1,17 +1,11 @@
 <button ng-click="playOneRound()" ng-disabled="isNextRoundDisabled">PLAY ONE ROUND</button>
 
-<div ng-repeat="group in groups" id="{{ groupSigns[$index] }}" class="group">
-    <div id="{{ 'table' + groupSigns[$index] }}">
-        <div class="group-header">
-            <div class="group-title">{{ group.title }}</div>
-            <div class="table-header" ng-repeat="columnHeader in tableColumnHeaders">{{ columnHeader }}</div>
-        </div>
-        <team-card team="team" ng-repeat="team in group.teams" ng-class="$index <= 1 ? 'advance-teams' : ''"></team-card>
-        <div class="fixtures-wrapper">
-            <button style="width: 100%;" ng-click="toggleFixtures()">SHOW FIXTURES</button>
-            <div ng-repeat="game in group.games" ng-show="isFixturesVissible" id="fixturesA" class="fixtures">
-                <fixture game="game" class="match"></fixture>
-            </div>
-        </div> 
-    </div>
+<div ng-repeat="group in groups" class="group">
+    <!-- <div class="group-header">
+        <div class="group-title">{{ group.title }}</div>
+        <div class="table-header" ng-repeat="columnHeader in tableColumnHeaders">{{ columnHeader }}</div>
+    </div> -->
+    <header title="group.title" class="group-header"></header>
+    <team-row team="team" ng-repeat="team in group.teams" ng-class="$index <= 1 ? 'advance-teams' : ''"></team-row>
+    <fixture games="group.games"></fixture>
 </div>

@@ -6,12 +6,15 @@ angular.module('groupStage.fixture', [])
     return {
         controller:  ['$scope', 
             function($scope) {
-                console.log($scope.game);
+                $scope.isFixtureVisible = false;
+                $scope.toggleFixture = function() {
+                    $scope.isFixtureVisible = !$scope.isFixtureVisible;
+                };
             }
         ],
         restrict: 'E',
         scope: {
-            game: '='
+            games: '='
         },
         templateUrl: '/group-stage/fixture/fixture.html', 
     }

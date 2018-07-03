@@ -130,18 +130,14 @@ button:disabled {
 }
 
 .match {
-    padding: 3px 0;
+    padding: 4px 0;
+    background-color: $background-color;
     display: grid;
     grid-template-columns: 5fr 1fr 1fr 1fr 5fr;
 }
 
 .match:hover {
     background-color: $grey-color;
-}
-
-.fixtures {
-    padding: 5px 30px;
-    background-color: $background-color;
 }
 
 .home-team {
@@ -157,9 +153,13 @@ button:disabled {
 }
 
 .fixtures-wrapper {
-    margin-top: 10px;
+    background-color: $background-color;
 }
 
 .advance-teams > div {
     background-color: $grey-color;
+}
+
+.bold {
+    font-weight: 700;
 }

@@ -1,5 +1,10 @@
-<div class="home-team">{{ game.home.team.name }}</div>
-<div class="score-home">{{ game.home.score === null ? '-' : game.home.score }}</div>
-<div class="dash"> - </div>
-<div class="score-away">{{ game.away.score === null ? '-' : game.away.score }}</div>
-<div>{{ game.away.team.name }}</div>
+<button style="width: 100%;" ng-click="toggleFixture()">SHOW FIXTURES</button>
+<div class="fixtures-wrapper">
+    <div ng-repeat="game in games" ng-show="isFixtureVisible" class="match">
+        <div class="home-team">{{ game.home.team.name }}</div>
+        <div class="score-home">{{ game.home.score === null ? '-' : game.home.score }}</div>
+        <div class="dash"> - </div>
+        <div class="score-away">{{ game.away.score === null ? '-' : game.away.score }}</div>
+        <div>{{ game.away.team.name }}</div>
+    </div>
+</div>

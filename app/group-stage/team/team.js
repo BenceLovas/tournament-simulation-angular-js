@@ -2,11 +2,10 @@
 
 angular.module('groupStage.team', [])
 
-.directive('teamCard', function() {
+.directive('teamRow', function() {
     return {
         controller:  ['$scope', 
             function($scope) {
-                console.log($scope.team);
             }
         ],
         restrict: 'E',
