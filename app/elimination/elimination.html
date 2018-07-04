@@ -1,1 +1,13 @@
-<div ng-repeat="team in teams">{{ team.name }}</div>
+<button ng-click="play()" ng-disabled="isPlayDisabled">PLAY</button>
+<button ng-click="pause()" ng-disabled="isPauseDisabled">PAUSE</button>
+
+<div id="table-wrapper">
+    <div ng-repeat="stage in stages" class="stage">
+        <div ng-repeat="game in stage" class="pair-card">
+            <div ng-repeat="team in game" class="team-card" ng-class="(game[0].score > game[1].score && $index === 0) || (game[1].score > game[0].score && $index === 1) ? 'winner' : ''">
+                <div>{{ team.name }}</div>
+                <div class="score">{{ team.score }}</div>
+            </div>
+        </div>
+    </div>
+</div>

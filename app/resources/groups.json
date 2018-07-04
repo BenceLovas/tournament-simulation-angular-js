@@ -1,0 +1,53 @@
+{
+    "groups": [
+        [
+            "Uruguay",
+            "Russia",
+            "Saudi Arabia",
+            "Egypt"
+        ],
+        [
+            "Spain",
+            "Portugal",
+            "Iran",
+            "Morocco"
+        ],
+        [
+            "France",
+            "Denmark",
+            "Peru",
+            "Australia"
+        ],
+        [
+            "Croatia",
+            "Argentina",
+            "Nigeria",
+            "Iceland"
+        ],
+        [
+            "Brazil",
+            "Switzerland",
+            "Serbia",
+            "Costa Rica"
+        ],
+        [
+            "Sweden",
+            "Mexico",
+            "South Korea",
+            "Germany"
+        ],
+        [
+            "England",
+            "Belgium",
+            "Tunisia",
+            "Panama"
+        ],
+        [
+            "Japan",
+            "Senegal",
+            "Colombia",
+            "Poland"
+        ]
+    ],
+    "groupSigns": ["A", "B", "C", "D", "E", "F", "G", "H"]
+}

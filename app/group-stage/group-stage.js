@@ -5,6 +5,7 @@ angular.module('groupStage', [
   'groupStage.header',
   'groupStage.team', 
   'groupStage.fixture',
+  'resourceService'
 ])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -14,64 +15,21 @@ angular.module('groupStage', [
   });
 }])
 
-.controller('GroupStageCtrl', ['$scope', '$location',
-  function($scope, $location) {
+.controller('GroupStageCtrl', ['$scope', '$location', 'GroupsRaw',
+  function($scope, $location, GroupsRaw) {
+    $scope.init = function() {
+        GroupsRaw.get(function(data) {
+            $scope.groupsOfTeams = data.groups;
+            $scope.groupSigns = data.groupSigns;
+            $scope.fillGroups();
+            $scope.fillGames();
+        });
+    }
     $scope.proceedToElimination = function() {
       $location.path('/elimination');
     };
     $scope.isProceedToEliminationDisabled = true;
     $scope.isNextRoundDisabled = false;
-    $scope.groupsOfTeams = [
-        [
-            'Uruguay',
-            'Russia',
-            'Saudi Arabia',
-            'Egypt',
-        ],
-        [
-            'Spain',
-            'Portugal',
-            'Iran',
-            'Morocco',
-        ],
-        [
-            'France',
-            'Denmark',
-            'Peru',
-            'Australia',
-        ],
-        [
-            'Croatia',
-            'Argentina',
-            'Nigeria',
-            'Iceland',
-        ],
-        [
-            'Brazil',
-            'Switzerland',
-            'Serbia',
-            'Costa Rica',
-        ],
-        [
-            'Sweden',
-            'Mexico',
-            'South Korea',
-            'Germany',
-        ],
-        [
-            'England',
-            'Belgium',
-            'Tunisia',
-            'Panama',
-        ],
-        [
-            'Japan',
-            'Senegal',
-            'Colombia',
-            'Poland',
-        ]
-    ];
-    $scope.groupSigns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',];
     $scope.matchesFinished = 0;
     $scope.groups = [];
     $scope.fillGroups = function() {
@@ -176,8 +134,7 @@ angular.module('groupStage', [
           }
           $scope.groups[groupIndex].teams.sort((a, b) => {return b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor})
       }
-    }; 
-    $scope.fillGroups();
-    $scope.fillGames();
+    };
+    $scope.init(); 
   }
 ]);

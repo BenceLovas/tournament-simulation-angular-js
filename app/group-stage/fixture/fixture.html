@@ -1,4 +1,4 @@
-<button style="width: 100%;" ng-click="toggleFixture()">SHOW FIXTURES</button>
+<button style="width: 100%;" ng-click="toggleFixture()">{{ fixtureButtonText }}</button>
 <div class="fixtures-wrapper">
     <div ng-repeat="game in games" ng-show="isFixtureVisible" class="match">
         <div class="home-team">{{ game.home.team.name }}</div>

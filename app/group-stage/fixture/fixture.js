@@ -7,8 +7,10 @@ angular.module('groupStage.fixture', [])
         controller:  ['$scope', 
             function($scope) {
                 $scope.isFixtureVisible = false;
+                $scope.fixtureButtonText = 'SHOW FIXTURES';
                 $scope.toggleFixture = function() {
                     $scope.isFixtureVisible = !$scope.isFixtureVisible;
+                    $scope.fixtureButtonText = $scope.fixtureButtonText === 'SHOW FIXTURES' ? 'HIDE FIXTURES' : 'SHOW FIXTURES';
                 };
             }
         ],

@@ -2,10 +2,6 @@
 <button ng-click="proceedToElimination()" ng-disabled="isProceedToEliminationDisabled">PROCEED TO ELIMINATION</button>
 
 <div ng-repeat="group in groups" class="group">
-    <!-- <div class="group-header">
-        <div class="group-title">{{ group.title }}</div>
-        <div class="table-header" ng-repeat="columnHeader in tableColumnHeaders">{{ columnHeader }}</div>
-    </div> -->
     <header title="group.title" class="group-header"></header>
     <team-row team="team" ng-repeat="team in group.teams" ng-class="$index <= 1 ? 'advance-teams' : ''"></team-row>
     <fixture games="group.games"></fixture>
