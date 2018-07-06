@@ -4,34 +4,142 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
-  background-color: #dbdbdb; }
+  background-color: #333333; }
+
+#navbar {
+  position: fixed;
+  background-color: #131313;
+  padding: 20px 5% 13px 0;
+  top: 0;
+  transform: skew(-45deg);
+  z-index: 100; }
+  @media only screen and (min-width: 650px) and (max-width: 780px) {
+    #navbar {
+      padding: 20px 6% 13px 4%; } }
+  @media only screen and (min-width: 781px) {
+    #navbar {
+      padding: 20px 7% 13px 21%; } }
+
+#navbar button {
+  font-size: 1em;
+  padding: .3em 1em;
+  transform: skew(45deg); }
+
+#navbar-line {
+  height: 30px;
+  width: 100%;
+  background-color: #131313;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4); }
+
+#match-counter {
+  width: 95%;
+  position: fixed;
+  top: 30px;
+  left: 0;
+  text-align: right;
+  transform: skewX(-45deg);
+  background-color: white;
+  padding: 2px 0;
+  text-transform: uppercase;
+  font-weight: lighter;
+  z-index: 97; }
+  @media only screen and (min-width: 650px) and (max-width: 780px) {
+    #match-counter {
+      width: 93%; } }
+  @media only screen and (min-width: 781px) {
+    #match-counter {
+      width: 70%; } }
+
+.skew-revert {
+  transform: skewX(45deg);
+  padding-right: 20px; }
+
+#group-stage-wrapper {
+  margin-top: 70px; }
+  @media only screen and (min-width: 650px) and (max-width: 780px) {
+    #group-stage-wrapper {
+      padding: 0 5%; } }
+  @media only screen and (min-width: 781px) {
+    #group-stage-wrapper {
+      padding: 0 20%; } }
 
 .group {
   margin: 10px;
-  background-color: #fefefe;
+  background-color: #5e5d5d;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); }
 
 .group-header {
-  background-color: #0066ff;
+  background-color: red;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
 
+#play-button,
+#proceed-to-elimination-button,
+#pause-button {
+  overflow: hidden;
+  position: relative; }
+  #play-button span,
+  #proceed-to-elimination-button span,
+  #pause-button span {
+    z-index: 20; }
+  #play-button:after,
+  #proceed-to-elimination-button:after,
+  #pause-button:after {
+    background: #fff;
+    content: "";
+    height: 155px;
+    left: -75px;
+    opacity: .5;
+    position: absolute;
+    top: -50px;
+    transform: rotate(35deg);
+    transition: all 700ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 50px;
+    z-index: 10; }
+
+#play-button:hover:enabled,
+#proceed-to-elimination-button:hover:enabled,
+#pause-button:hover:enabled {
+  background-color: #d60000; }
+  #play-button:hover:enabled:after,
+  #proceed-to-elimination-button:hover:enabled:after,
+  #pause-button:hover:enabled:after {
+    left: 120%;
+    transition: all 700ms cubic-bezier(0.19, 1, 0.22, 1); }
+
 .team-row {
+  position: relative;
+  overflow: hidden;
+  font-weight: lighter;
+  color: white;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas: "name played won drawn lost goals-for goals-against goal-diff points"; }
+  .team-row::before {
+    --size: 0;
+    content: '';
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--size);
+    height: var(--size);
+    background: radial-gradient(circle closest-side, #fff, transparent);
+    transform: translate(-50%, -50%);
+    transition: width .2s ease, height .2s ease; }
+  .team-row:hover::before {
+    --size: 400px; }
 
 .team-row:hover {
   background-color: #919191;
-  color: white; }
+  color: black; }
 
 .table-header {
   text-align: center;
   font-weight: lighter;
   padding: 3px 0; }
-
-.group-header {
-  color: white; }
 
 .group-title {
   font-weight: bold;
@@ -39,7 +147,9 @@ body {
 
 .team-name {
   grid-area: name;
-  padding-left: 10px; }
+  padding-left: 10px;
+  font-weight: normal;
+  position: relative; }
 
 .group-header {
   margin-bottom: 6px; }
@@ -91,19 +201,21 @@ button {
   outline: none;
   border-radius: 1px;
   cursor: pointer;
-  background-color: #004ab9; }
+  background-color: red; }
 
 button:disabled {
   background-color: #919191; }
 
 .match {
-  padding: 4px 0;
-  background-color: #dbdbdb;
+  padding: 6px 0;
+  background-color: #5e5d5d;
+  color: white;
   display: grid;
-  grid-template-columns: 5fr 1fr 1fr 1fr 5fr; }
+  grid-template-columns: 5fr 1fr 1fr 1fr 5fr;
+  border-bottom: 2px solid #777; }
 
-.match:hover {
-  background-color: #cacaca; }
+.match-finished {
+  background-color: #414141; }
 
 .home-team {
   text-align: end; }
@@ -115,16 +227,38 @@ button:disabled {
   text-align: end; }
 
 .fixtures-wrapper {
-  background-color: #dbdbdb; }
+  background-color: #5e5d5d; }
+
+.advance-teams .team-name {
+  font-weight: bold; }
 
 .advance-teams > div {
-  background-color: #cacaca; }
+  background-color: #414141; }
 
 .bold {
   font-weight: 700; }
 
+.normal-font {
+  font-weight: normal; }
+
+.fixture-button {
+  background-color: #b31b1b; }
+
+.fixture-button:hover {
+  background-color: #810606; }
+
+.advance-teams > div.group-line {
+  width: 100%;
+  background-color: #777;
+  height: 2px; }
+
+.group-line {
+  width: 100%;
+  background-color: #777;
+  height: 2px; }
+
 #table-wrapper {
-  margin-top: 50px;
+  margin-top: 80px;
   padding: 0 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr); }
@@ -137,21 +271,22 @@ button:disabled {
 
 .pair-card {
   margin-bottom: 5px;
-  background-color: #dbdbdb;
+  background-color: #333333;
   padding: 2px 5px; }
 
 .team-card {
   display: flex;
   justify-content: space-between;
+  color: white;
   padding: 6px 10px;
-  background-color: #ededed;
+  background-color: #414141;
   margin-bottom: 3px;
-  box-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2); }
+  box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.4); }
 
 .score {
   padding: 2px 6px;
   border-radius: 2px;
-  background: #da0b15;
+  background: #810606;
   color: white;
   font-weight: bold;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -159,9 +294,50 @@ button:disabled {
 
 .winner {
   font-weight: bold;
-  background-color: #fefefe; }
+  background-color: #5e5d5d; }
 
 .winner .score {
-  background-color: #0066ff; }
+  background-color: red; }
+
+.modal {
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  /* Could be more or less, depending on screen size */ }
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold; }
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer; }
 
 /*# sourceMappingURL=app.css.map */

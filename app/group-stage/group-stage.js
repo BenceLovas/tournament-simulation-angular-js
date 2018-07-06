@@ -15,10 +15,10 @@ angular.module('groupStage', [
   });
 }])
 
-.controller('GroupStageCtrl', ['$scope', '$location', 'GroupsRaw',
-  function($scope, $location, GroupsRaw) {
+.controller('GroupStageCtrl', ['$scope', '$location', 'groupDataService',
+  function($scope, $location, groupDataService) {
     $scope.init = function() {
-        GroupsRaw.get(function(data) {
+        groupDataService.get(function(data) {
             $scope.groupsOfTeams = data.groups;
             $scope.groupSigns = data.groupSigns;
             $scope.fillGroups();
@@ -73,67 +73,58 @@ angular.module('groupStage', [
         }
     };
     $scope.playOneRound = function() {
-      for (let i = 0; i < $scope.groups.length; i++) {
-          for (let j = $scope.matchesFinished; j < $scope.matchesFinished + 2; j++) {
-              const homeTeamScore = Math.floor(Math.random() * 5);
-              const awayTeamScore = Math.floor(Math.random() * 5);
-              $scope.groups[i].games[j].home.score = homeTeamScore;
-              $scope.groups[i].games[j].away.score = awayTeamScore;
-          }
-      }
-      $scope.updateTableData();
-      $scope.matchesFinished += 2;
-      if ($scope.matchesFinished === 6) {
-       $scope.isNextRoundDisabled = true; 
-       $scope.isProceedToEliminationDisabled = false;
-       const advancedTeams = [];
-       for (let i = 0; i < $scope.groups.length; i++) {
-           advancedTeams.push({ name: $scope.groups[i].teams[0].name, score: null });
-           advancedTeams.push({ name: $scope.groups[i].teams[1].name, score: null });
-       }
-       localStorage.setItem('teams', JSON.stringify(advancedTeams));
-      }
+        for (let i = 0; i < $scope.groups.length; i++) {
+            for (let j = $scope.matchesFinished; j < $scope.matchesFinished + 2; j++) {
+                const homeTeamScore = Math.floor(Math.random() * 5);
+                const awayTeamScore = Math.floor(Math.random() * 5);
+                $scope.groups[i].games[j].home.score = homeTeamScore;
+                $scope.groups[i].games[j].away.score = awayTeamScore;
+            }
+        }
+        $scope.updateTableData();
+        $scope.matchesFinished += 2;
+        if ($scope.matchesFinished === 6) {
+            $scope.finalize();
+        }      
+    };
+    $scope.finalize = function() {
+        $scope.isNextRoundDisabled = true; 
+        $scope.isProceedToEliminationDisabled = false;
+        const advancedTeams = [];
+        for (let i = 0; i < $scope.groups.length; i++) {
+            advancedTeams.push({ name: $scope.groups[i].teams[0].name, score: null });
+            advancedTeams.push({ name: $scope.groups[i].teams[1].name, score: null });
+        }
+        localStorage.setItem('teams', JSON.stringify(advancedTeams));
     };
     $scope.updateTableData = function() {
-      for (let groupIndex = 0; groupIndex < $scope.groups.length; groupIndex++) {
-          for (let gameIndex = $scope.matchesFinished; gameIndex < $scope.matchesFinished + 2; gameIndex++) {
+        for (let groupIndex = 0; groupIndex < $scope.groups.length; groupIndex++) {
+            for (let gameIndex = $scope.matchesFinished; gameIndex < $scope.matchesFinished + 2; gameIndex++) {
               
-              for (let teamIndex = 0; teamIndex < $scope.groups[groupIndex].teams.length; teamIndex++) {
-                  if ($scope.groups[groupIndex].teams[teamIndex].name === $scope.groups[groupIndex].games[gameIndex].home.team.name) {
-                      $scope.groups[groupIndex].teams[teamIndex].played += 1;
-                      $scope.groups[groupIndex].teams[teamIndex].goalsFor += $scope.groups[groupIndex].games[gameIndex].home.score;
-                      $scope.groups[groupIndex].teams[teamIndex].goalsAgainst += $scope.groups[groupIndex].games[gameIndex].away.score;
-                      $scope.groups[groupIndex].teams[teamIndex].goalDifference = $scope.groups[groupIndex].teams[teamIndex].goalsFor - $scope.groups[groupIndex].teams[teamIndex].goalsAgainst;
-                      if ($scope.groups[groupIndex].games[gameIndex].home.score > $scope.groups[groupIndex].games[gameIndex].away.score) {
-                          $scope.groups[groupIndex].teams[teamIndex].won += 1;
-                          $scope.groups[groupIndex].teams[teamIndex].points += 3;
-                      } else if ($scope.groups[groupIndex].games[gameIndex].home.score < $scope.groups[groupIndex].games[gameIndex].away.score) {
-                          $scope.groups[groupIndex].teams[teamIndex].lost += 1;
-                      } else {
-                          $scope.groups[groupIndex].teams[teamIndex].drawn += 1;
-                          $scope.groups[groupIndex].teams[teamIndex].points += 1;
-                      }
-                  }
-
-                  if ($scope.groups[groupIndex].teams[teamIndex].name === $scope.groups[groupIndex].games[gameIndex].away.team.name) {
-                      $scope.groups[groupIndex].teams[teamIndex].played += 1;
-                      $scope.groups[groupIndex].teams[teamIndex].goalsFor += $scope.groups[groupIndex].games[gameIndex].away.score;
-                      $scope.groups[groupIndex].teams[teamIndex].goalsAgainst += $scope.groups[groupIndex].games[gameIndex].home.score;
-                      $scope.groups[groupIndex].teams[teamIndex].goalDifference = $scope.groups[groupIndex].teams[teamIndex].goalsFor - $scope.groups[groupIndex].teams[teamIndex].goalsAgainst;
-                      if ($scope.groups[groupIndex].games[gameIndex].away.score > $scope.groups[groupIndex].games[gameIndex].home.score) {
-                          $scope.groups[groupIndex].teams[teamIndex].won += 1;
-                          $scope.groups[groupIndex].teams[teamIndex].points += 3;
-                      } else if ($scope.groups[groupIndex].games[gameIndex].away.score < $scope.groups[groupIndex].games[gameIndex].home.score) {
-                          $scope.groups[groupIndex].teams[teamIndex].lost += 1;
-                      } else {
-                          $scope.groups[groupIndex].teams[teamIndex].drawn += 1;
-                          $scope.groups[groupIndex].teams[teamIndex].points += 1;
-                      }
-                  }
-              }
-          }
-          $scope.groups[groupIndex].teams.sort((a, b) => {return b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor})
-      }
+                for (let teamIndex = 0; teamIndex < $scope.groups[groupIndex].teams.length; teamIndex++) {
+                    $scope.updateStatistics('home', 'away', groupIndex, teamIndex, gameIndex);
+                    $scope.updateStatistics('away', 'home', groupIndex, teamIndex, gameIndex);
+                }
+            }
+            $scope.groups[groupIndex].teams.sort((a, b) => {return b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor})
+        }
+    };
+    $scope.updateStatistics = function(firstTeam, secondTeam, groupIndex, teamIndex, gameIndex) {
+        if ($scope.groups[groupIndex].teams[teamIndex].name === $scope.groups[groupIndex].games[gameIndex][firstTeam].team.name) {
+            $scope.groups[groupIndex].teams[teamIndex].played += 1;
+            $scope.groups[groupIndex].teams[teamIndex].goalsFor += $scope.groups[groupIndex].games[gameIndex][firstTeam].score;
+            $scope.groups[groupIndex].teams[teamIndex].goalsAgainst += $scope.groups[groupIndex].games[gameIndex][secondTeam].score;
+            $scope.groups[groupIndex].teams[teamIndex].goalDifference = $scope.groups[groupIndex].teams[teamIndex].goalsFor - $scope.groups[groupIndex].teams[teamIndex].goalsAgainst;
+            if ($scope.groups[groupIndex].games[gameIndex][firstTeam].score > $scope.groups[groupIndex].games[gameIndex][secondTeam].score) {
+                $scope.groups[groupIndex].teams[teamIndex].won += 1;
+                $scope.groups[groupIndex].teams[teamIndex].points += 3;
+            } else if ($scope.groups[groupIndex].games[gameIndex][firstTeam].score < $scope.groups[groupIndex].games[gameIndex][secondTeam].score) {
+                $scope.groups[groupIndex].teams[teamIndex].lost += 1;
+            } else {
+                $scope.groups[groupIndex].teams[teamIndex].drawn += 1;
+                $scope.groups[groupIndex].teams[teamIndex].points += 1;
+            } 
+        }
     };
     $scope.init(); 
   }

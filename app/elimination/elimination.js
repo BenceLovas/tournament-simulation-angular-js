@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('elimination', ['ngRoute'])
+angular.module('elimination', [
+    'ngRoute',
+    'resourceService',  
+])
 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/elimination', {
@@ -9,8 +12,8 @@ angular.module('elimination', ['ngRoute'])
     });
 }])
 
-.controller('EliminationCtrl', ['$scope', '$interval',
-    function($scope, $interval) {
+.controller('EliminationCtrl', ['$scope', '$interval', 'playerDataService',
+    function($scope, $interval, playerDataService) {
         $scope.currentPairs = JSON.parse(localStorage.getItem('teams'));
         $scope.winner = '';
         $scope.intervalId = null;
@@ -18,6 +21,22 @@ angular.module('elimination', ['ngRoute'])
         $scope.isPlayDisabled = false;
         $scope.isPauseDisabled = true;
         $scope.stages = [];
+        $scope.isRequestAvailable = false;
+        $scope.playersInModal = [];
+        $scope.isModalVisible = false;
+        $scope.closeModal = function() {
+            $scope.isModalVisible = false;
+        };
+        $scope.getPlayers = function() {
+            if ($scope.isRequestAvailable) {
+                $scope.isRequestAvailable = false;
+                playerDataService.get(function(data) {
+                    $scope.playersInModal = data.results;
+                    $scope.isRequestAvailable = true;
+                    $scope.isModalVisible = true;
+                });
+            }
+        };
         $scope.shuffleTeams = function(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -59,6 +78,7 @@ angular.module('elimination', ['ngRoute'])
         $scope.play = function() {
             $scope.isPlayDisabled = true;
             $scope.isPauseDisabled = false;
+            $scope.isRequestAvailable = false;
             if (!$scope.inProgress) {
                 $scope.initialize();
             }
@@ -68,6 +88,7 @@ angular.module('elimination', ['ngRoute'])
             $interval.cancel($scope.intervalId);
             $scope.isPauseDisabled = true;
             $scope.isPlayDisabled = false;
+            $scope.isRequestAvailable = true;
         };
         $scope.initialize = function() {
             $scope.inProgress = true;
@@ -83,7 +104,6 @@ angular.module('elimination', ['ngRoute'])
             } else if ($scope.currentPairs.length === 1) {
                 $scope.finalize();
             }
-            console.log("stages: ", $scope.stages);
         };
         $scope.round = function() {
             $scope.eliminateTeams();
@@ -93,7 +113,6 @@ angular.module('elimination', ['ngRoute'])
         };
         $scope.finalize = function() {
             $scope.getWinner();
-            console.log("WINNER", $scope.winner);   
             $interval.cancel($scope.intervalId);
             $scope.isPauseDisabled = true;
         };

@@ -1,8 +1,16 @@
-<button ng-click="playOneRound()" ng-disabled="isNextRoundDisabled">PLAY ONE ROUND</button>
-<button ng-click="proceedToElimination()" ng-disabled="isProceedToEliminationDisabled">PROCEED TO ELIMINATION</button>
+<div id="navbar-line"></div>
+<div id="navbar">
+    <button id="play-button" ng-click="playOneRound()" ng-disabled="isNextRoundDisabled"><span>PLAY ONE ROUND</span></button>
+    <button id="proceed-to-elimination-button" ng-click="proceedToElimination()" ng-disabled="isProceedToEliminationDisabled">PROCEED TO ELIMINATION</button>
+</div>
+<div id="match-counter">
+    <div class="skew-revert">Rounds left: <span class="bold">{{ 3 - matchesFinished / 2 }}</span></div>
+</div>
 
-<div ng-repeat="group in groups" class="group">
-    <header title="group.title" class="group-header"></header>
-    <team-row team="team" ng-repeat="team in group.teams" ng-class="$index <= 1 ? 'advance-teams' : ''"></team-row>
-    <fixture games="group.games"></fixture>
+<div id="group-stage-wrapper">
+    <div ng-repeat="group in groups" class="group">
+        <header title="group.title" class="group-header"></header>
+        <team-row team="team" ng-repeat="team in group.teams" ng-class="$index <= 1 ? 'advance-teams' : ''"></team-row>
+        <fixture games="group.games"></fixture>
+    </div>
 </div>

@@ -1,16 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
 
 $font: 'Roboto', sans-serif;
-$background-color: #dbdbdb;
+$background-color: #333333;
 $team-card-winner-color: #fefefe;
 $grey-color: #cacaca;
-$primary-color: rgb(0, 102, 255);
-$primary-dark-color: rgb(0, 74, 185);
-$secondary-color: #da0b15;
-$secondary-dark-color: #b90a15;
+$primary-color: rgb(255, 0, 0);
+$primary-dark-color: rgb(214, 0, 0);
+$secondary-color: #b31b1b;
+$secondary-dark-color: #810606;
 $disabled-button-color: #919191;
-$team-card-winner-color: #fefefe;
-$team-card-loser-color: #ededed;
+$team-card-winner-color: #5e5d5d;
+$team-card-loser-color: #414141;
+$group-background-color: #5e5d5d;
+$fixtures-background-color: #5e5d5d;
+$advancing-teams-background-color: #414141;
 
 html,
 body {
@@ -20,9 +23,84 @@ body {
     background-color: $background-color;
 }
 
+#navbar {
+    position: fixed;
+    background-color: rgb(19, 19, 19);
+    // width: 100%;
+    padding: 20px 5% 13px 0;
+    top: 0;
+    transform: skew(-45deg);
+    z-index: 100;
+
+    @media only screen and (min-width: 650px) and (max-width: 780px) {
+        padding: 20px 6% 13px 4%;
+    }
+    
+    @media only screen and (min-width: 781px) {
+        padding: 20px 7% 13px 21%;
+    }
+}
+
+#navbar {
+    button {
+        font-size: 1em;
+        padding: .3em 1em;
+        transform: skew(45deg);
+    }
+}
+
+#navbar-line {
+    height: 30px;
+    width: 100%;
+    background-color: rgb(19, 19, 19);
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    box-shadow: 2px 2px 2px rgba(0,0,0, 0.4);
+}
+
+#match-counter {
+    width: 95%;
+    position: fixed;
+    top: 30px;
+    left: 0;
+    text-align: right;
+    transform: skewX(-45deg);
+    background-color: white;
+    padding: 2px 0;
+    text-transform: uppercase;
+    font-weight: lighter;
+    z-index: 97;
+
+    @media only screen and (min-width: 650px) and (max-width: 780px) {
+        width: 93%;
+    }
+    
+    @media only screen and (min-width: 781px) {
+        width: 70%;
+    }
+}
+
+.skew-revert {
+    transform: skewX(45deg);
+    padding-right: 20px;
+}
+
+#group-stage-wrapper {
+    margin-top: 70px;
+
+    @media only screen and (min-width: 650px) and (max-width: 780px) {
+        padding: 0 5%;
+    }
+    
+    @media only screen and (min-width: 781px) {
+        padding: 0 20%;
+    }
+}
+
 .group {
     margin: 10px;
-    background-color: #fefefe;
+    background-color: $group-background-color;
     box-shadow: 1px 1px 2px rgba(0,0,0, 0.4);
 }
 
@@ -32,26 +110,81 @@ body {
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
+#play-button,
+#proceed-to-elimination-button,
+#pause-button {
+    overflow: hidden;
+    position: relative;
+    
+    span {
+        z-index: 20;
+    }
+    
+    &:after {
+        background: #fff;
+        content: "";
+        height: 155px;
+        left: -75px;
+        opacity: .5;
+        position: absolute;
+        top: -50px;
+        transform: rotate(35deg);
+        transition: all 700ms cubic-bezier(0.19, 1, 0.22, 1);
+        width: 50px;
+        z-index: 10;
+    }
+}
+  
+#play-button:hover:enabled,
+#proceed-to-elimination-button:hover:enabled,
+#pause-button:hover:enabled {
+
+    background-color: $primary-dark-color;
+
+    &:after {
+        left: 120%;
+        transition: all 700ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
+}
+
 .team-row {
+    position: relative;
+    overflow: hidden;
+
+    font-weight: lighter;
+    color: white;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: 
             "name played won drawn lost goals-for goals-against goal-diff points";
+
+    &::before {
+        --size: 0;
+        content: '';
+        position: absolute;
+        left: var(--x);
+        top: var(--y);
+        width: var(--size);
+        height: var(--size);
+        background: radial-gradient(circle closest-side, #fff, transparent);
+        transform: translate(-50%, -50%);
+        transition: width .2s ease, height .2s ease;
+    }
+    
+    &:hover::before {
+        --size: 400px;
+    }
 }
 
 .team-row:hover {
     background-color: $disabled-button-color;
-    color: white;
+    color: black;
 }
   
 .table-header {
     text-align: center;
     font-weight: lighter;
     padding: 3px 0;
-}
-
-.group-header {
-    color: white;
 }
 
 .group-title {
@@ -62,6 +195,8 @@ body {
 .team-name {
     grid-area: name;
     padding-left: 10px;
+    font-weight: normal;
+    position: relative;
 }
 
 .group-header {
@@ -124,7 +259,7 @@ button {
     outline: none;
     border-radius: 1px;
     cursor: pointer;
-    background-color: $primary-dark-color;
+    background-color: $primary-color;
 }
 
 button:disabled {
@@ -132,14 +267,16 @@ button:disabled {
 }
 
 .match {
-    padding: 4px 0;
-    background-color: $background-color;
+    padding: 6px 0;
+    background-color: $fixtures-background-color;
+    color: white;
     display: grid;
     grid-template-columns: 5fr 1fr 1fr 1fr 5fr;
+    border-bottom: 2px solid #777;
 }
 
-.match:hover {
-    background-color: $grey-color;
+.match-finished {
+    background-color: $advancing-teams-background-color;
 }
 
 .home-team {
@@ -155,22 +292,49 @@ button:disabled {
 }
 
 .fixtures-wrapper {
-    background-color: $background-color;
+    background-color: $fixtures-background-color;
+}
+
+.advance-teams .team-name {
+    font-weight: bold;
 }
 
 .advance-teams > div {
-    background-color: $grey-color;
+    background-color: $advancing-teams-background-color;
 }
 
 .bold {
     font-weight: 700;
 }
 
+.normal-font {
+    font-weight: normal;
+}
+
+.fixture-button {
+    background-color: $secondary-color;
+}
+
+.fixture-button:hover {
+    background-color: $secondary-dark-color;
+}
+
+.advance-teams > div.group-line {
+    width: 100%;
+    background-color: #777;
+    height: 2px;
+}
+
+.group-line {
+    width: 100%;
+    background-color: #777;
+    height: 2px;
+}
 
 // ELIMINATION FROM HERE
 
 #table-wrapper {
-    margin-top: 50px;
+    margin-top: 80px;
     padding: 0 20px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -192,16 +356,17 @@ button:disabled {
 .team-card {
     display: flex;
     justify-content: space-between;
+    color: white;
     padding: 6px 10px;
     background-color: $team-card-loser-color;
     margin-bottom: 3px;
-    box-shadow: 2px 1px 2px rgba(0,0,0, 0.2);
+    box-shadow: 2px 1px 3px rgba(0,0,0, 0.4);
 }
 
 .score {
     padding: 2px 6px;
     border-radius: 2px;
-    background: $secondary-color;
+    background: $secondary-dark-color;
     color: white;
     font-weight: bold;
     text-shadow: 1px 1px 1px rgba(0,0,0, 0.2);
@@ -215,4 +380,42 @@ button:disabled {
   
 .winner .score {
     background-color: $primary-color;
+}
+
+// MODAL
+
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
